@@ -1,0 +1,26 @@
+# robots.txt for Astrologer Psychic and Spiritual Healer (Master Ganesh)
+# https://indianspiritualastrologer.com / Spartanburg SC
+
+User-agent: *
+Allow: /
+Disallow: /scratch/
+Disallow: /.system_generated/
+
+# AI and Answer Engine Search Bots
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Sitemap Location
+Sitemap: https://indianspiritualastrologer.com/sitemap.xml
