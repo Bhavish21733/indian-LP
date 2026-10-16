@@ -307,4 +307,154 @@ document.addEventListener('DOMContentLoaded', () => {
   if (yearElement) {
     yearElement.textContent = new Date().getFullYear();
   }
+
+  // 9. Scroll Reveal Animations Throughout Site
+  const initScrollReveal = () => {
+    const revealTargets = [
+      '.section-header',
+      '.service-card',
+      '.problem-card',
+      '.gallery-card',
+      '.trust-strip',
+      '.emergency-shield-card',
+      '.about-text',
+      '.about-image-card',
+      '.palm-analysis-box',
+      '.faq-item',
+      '.location-info-card',
+      '.map-wrapper',
+      '.footer-col'
+    ];
+
+    document.querySelectorAll(revealTargets.join(', ')).forEach((el) => {
+      if (!el.classList.contains('reveal-on-scroll') && !el.closest('#hero')) {
+        el.classList.add('reveal-on-scroll');
+      }
+    });
+
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+
+    if (!('IntersectionObserver' in window)) {
+      revealElements.forEach(el => el.classList.add('is-revealed'));
+      return;
+    }
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -30px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  };
+
+  initScrollReveal();
+
+  // 10. 60% Scroll Popup Modal (Direct WhatsApp Lead Capture)
+  const popupModal = document.getElementById('scroll-popup-modal');
+  const popupCloseBtn = document.getElementById('popup-close-btn');
+  const popupOverlay = document.getElementById('popup-overlay');
+  const popupForm = document.getElementById('popup-lead-form');
+
+  let popupShown = false;
+  try {
+    if (sessionStorage.getItem('ganeshPopupDismissed') === 'true') {
+      popupShown = true;
+    }
+  } catch (e) {}
+
+  const openPopup = () => {
+    if (!popupModal || popupShown) return;
+    popupShown = true;
+    popupModal.classList.add('active');
+    popupModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closePopup = () => {
+    if (!popupModal) return;
+    popupModal.classList.remove('active');
+    popupModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    try {
+      sessionStorage.setItem('ganeshPopupDismissed', 'true');
+    } catch (e) {}
+  };
+
+  if (popupCloseBtn) popupCloseBtn.addEventListener('click', closePopup);
+  if (popupOverlay) popupOverlay.addEventListener('click', closePopup);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && popupModal?.classList.contains('active')) {
+      closePopup();
+    }
+  });
+
+  // Calculate 60% scroll position
+  window.addEventListener('scroll', () => {
+    if (popupShown) return;
+    const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollTotal > 0) {
+      const scrollPercent = (window.scrollY / scrollTotal) * 100;
+      if (scrollPercent >= 60) {
+        openPopup();
+      }
+    }
+  }, { passive: true });
+
+  // Handle Popup Form Submit -> WhatsApp
+  if (popupForm) {
+    popupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('btn-popup-submit');
+      const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.innerHTML = '<span>Connecting to WhatsApp...</span>';
+        submitBtn.disabled = true;
+      }
+
+      const formData = new FormData(popupForm);
+      const name = (formData.get('name') || '').toString().trim();
+      const phone = (formData.get('phone') || '').toString().trim();
+      const service = (formData.get('service') || '').toString().trim();
+      const message = (formData.get('message') || '').toString().trim();
+
+      const waText = 
+`Hello Master Ganesh, I would like to schedule a private Vedic consultation.
+
+*Name:* ${name || 'Confidential Client'}
+*Phone:* ${phone || 'Not Provided'}
+*Service Needed:* ${service || 'General Spiritual Consultation'}
+*Details:* ${message || 'Please contact me for assistance.'}`;
+
+      const waUrl = `https://wa.me/18642856983?text=${encodeURIComponent(waText)}`;
+
+      // Background asynchronous Netlify lead submission
+      try {
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData).toString()
+        }).catch(() => {});
+      } catch (err) {}
+
+      setTimeout(() => {
+        const opened = window.open(waUrl, '_blank');
+        if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+          window.location.href = waUrl;
+        }
+        closePopup();
+        if (submitBtn) {
+          submitBtn.innerHTML = originalHtml;
+          submitBtn.disabled = false;
+        }
+      }, 300);
+    });
+  }
 });

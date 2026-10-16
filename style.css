@@ -2281,7 +2281,7 @@ textarea.form-control {
   }
 
   .hero-title {
-    font-size: clamp(1.22rem, 5.2vw, 1.7rem) !important;
+    font-size: clamp(1.42rem, 6.2vw, 1.75rem) !important;
     line-height: 1.25 !important;
     letter-spacing: 0.01em !important;
     word-break: break-word !important;
@@ -2661,7 +2661,7 @@ textarea.form-control {
   }
 
   .hero-title {
-    font-size: 1.65rem;
+    font-size: clamp(1.42rem, 6.2vw, 1.65rem) !important;
   }
 
   .hero-badge-pill {
@@ -2696,3 +2696,238 @@ textarea.form-control {
     padding: 1.35rem 1rem;
   }
 }
+
+/* ==========================================================================
+   SCROLL REVEAL ANIMATIONS THROUGHOUT THE SITE
+   ========================================================================== */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   60% SCROLL POPUP MODAL (WHATSAPP DIRECT CONSULTATION)
+   ========================================================================== */
+.popup-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.popup-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 7, 14, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.popup-container {
+  position: relative;
+  z-index: 10;
+  background: #090D18;
+  border: 1.5px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem 1.85rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(229, 193, 88, 0.16);
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  transform: scale(0.92) translateY(15px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.popup-modal.active .popup-container {
+  transform: scale(1) translateY(0);
+}
+
+.popup-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(229, 193, 88, 0.08);
+  border: 1px solid var(--border-gold-subtle);
+  color: var(--gold-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.popup-close-btn:hover {
+  background: rgba(217, 56, 58, 0.25);
+  border-color: var(--crimson-accent);
+  color: #FFFFFF;
+}
+
+.popup-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gold-primary);
+  letter-spacing: 0.06em;
+  background: rgba(229, 193, 88, 0.1);
+  border: 1px solid var(--border-gold-subtle);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.65rem;
+}
+
+.popup-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 3.8vw, 1.55rem);
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 0.4rem;
+  line-height: 1.25;
+}
+
+.popup-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+.popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.popup-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.popup-form label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  letter-spacing: 0.02em;
+}
+
+.popup-form label .required {
+  color: var(--crimson-accent);
+}
+
+.popup-form .form-control {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-gold-subtle);
+  border-radius: var(--radius-sm);
+  color: #FFFFFF;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.88rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: var(--transition);
+}
+
+.popup-form .form-control:focus {
+  outline: none;
+  border-color: var(--gold-primary);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 10px rgba(229, 193, 88, 0.25);
+}
+
+.popup-form select.form-control option {
+  background: #090D18;
+  color: #FFFFFF;
+}
+
+.popup-form textarea.form-control {
+  resize: vertical;
+  min-height: 65px;
+}
+
+.btn-popup-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+  transition: var(--transition);
+  margin-top: 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-popup-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+  filter: brightness(1.08);
+}
+
+.btn-popup-submit:active {
+  transform: translateY(0);
+}
+
+.popup-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+}
+
+.popup-privacy svg {
+  color: var(--gold-primary);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .popup-container {
+    padding: 1.75rem 1.25rem 1.5rem;
+  }
+}
+
