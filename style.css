@@ -147,33 +147,55 @@ button, input, select, textarea {
   border-bottom: 1px solid rgba(217, 56, 58, 0.35);
   color: #F8E2E2;
   font-size: 0.825rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
   position: relative;
   z-index: 1001;
   display: flex;
   align-items: center;
-  justify-content: center;
   overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .announcement-marquee {
   display: flex;
+  width: max-content;
   align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  width: 100%;
+  animation: tickerScroll 30s linear infinite;
+  will-change: transform;
+}
+
+.announcement-marquee:hover,
+.announcement-marquee:active {
+  animation-play-state: paused;
+}
+
+.announcement-track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .announcement-content {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  padding-right: 3rem;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .announcement-clone {
-  display: none;
+  display: flex;
+}
+
+@keyframes tickerScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 .pulse-indicator {
@@ -2011,30 +2033,15 @@ textarea.form-control {
     font-size: 0.775rem;
     padding: 0.45rem 0;
     line-height: 1.4;
-    justify-content: flex-start;
-    overflow: hidden;
-    white-space: nowrap;
   }
 
   .announcement-marquee {
-    display: flex;
-    width: max-content;
-    animation: tickerScroll 22s linear infinite;
-  }
-
-  .announcement-marquee:hover,
-  .announcement-marquee:active {
-    animation-play-state: paused;
+    animation-duration: 22s;
   }
 
   .announcement-content {
-    gap: 1.5rem;
+    gap: 1.25rem;
     padding-right: 2rem;
-    flex-shrink: 0;
-  }
-
-  .announcement-clone {
-    display: flex;
   }
 
   .site-header {
